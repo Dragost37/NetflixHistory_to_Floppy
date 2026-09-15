@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# VS Code workspace settings
+.vscode/
+
+# Generated cache and exports
+tmdb_cache.json
+NetflixViewingHistory.csv
+floppy_import_from_netflix.csv
+floppy_import_from_netflix_no_tmdb.csv
+floppy_movies_only.csv
+floppy_series_only.csv
+floppy_episodes_only.csv
+test_*_out.csv
