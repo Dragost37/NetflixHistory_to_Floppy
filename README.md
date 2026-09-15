@@ -44,11 +44,47 @@ The default output file is:
 
 - `floppy_import_from_netflix.csv`
 
-## Useful options
+## Useful commands
+
+### Recommended commands
+
+The commands below give the most reliable results.
+
+```powershell
+python netflix_to_floppy.py --disable-tmdb
+```
+
+This is the most stable option if you want a reproducible export without depending on TMDB matches.
+
+```powershell
+python netflix_to_floppy.py --movies-only --output floppy_movies_only.csv
+```
+
+```powershell
+python netflix_to_floppy.py --series-only --output floppy_series_only.csv
+```
+
+These filters are useful for testing or isolating part of the viewing history.
+
+### Commands with approximate results
+
+The standard command with TMDB enrichment can produce better metadata fields, but the matches remain heuristic for some titles.
+
+```powershell
+python netflix_to_floppy.py
+```
+
+It uses TMDB if the key is available, and can sometimes make approximate matches for ambiguous titles, series, episodes, or names that differ slightly from Netflix's export.
+
+If you want to force this mode with the full set of parameters:
 
 ```powershell
 python netflix_to_floppy.py --config .env --input NetflixViewingHistory.csv --template floppy_import_template.csv --output floppy_import_from_netflix.csv --list-name "Netflix History" --list-uid "netflix-history" --tmdb-language "fr-FR"
 ```
+
+Change `fr-FR` in `--tmdb-language` to the locale you want if you prefer another language.
+
+### Additional options
 
 To test without TMDB:
 
@@ -56,19 +92,7 @@ To test without TMDB:
 python netflix_to_floppy.py --disable-tmdb
 ```
 
-To export only movies:
-
-```powershell
-python netflix_to_floppy.py --movies-only --output floppy_movies_only.csv
-```
-
-To export only series-related entries:
-
-```powershell
-python netflix_to_floppy.py --series-only --output floppy_series_only.csv
-```
-
-Other useful debug filters:
+Other debug filters:
 
 ```powershell
 python netflix_to_floppy.py --tv-only --output floppy_tv_only.csv
@@ -82,10 +106,18 @@ You can also use the generic filter form:
 python netflix_to_floppy.py --entry-filter episodes --output floppy_episodes_only.csv
 ```
 
+The `--entry-filter`, `--movies-only`, `--series-only`, `--tv-only`, `--seasons-only`, and `--episodes-only` filters are mutually exclusive: only one of them can be used at a time.
+
+## Notes on accuracy
+
+Movie exports usually work relatively well because the title match is straightforward and Floppy can often map them automatically.
+
+Series are more fragile in this script. Episode and season handling is based on the title text, and Netflix does not always include the episode number in the export. Sometimes it only includes the episode name, which makes automated matching harder and can lead to approximate results or missing episode-level details.
+
 ## Import into Floppy
 
 Use Floppy's CSV import and select `floppy_import_from_netflix.csv`.
 
-## Note about `.clz` / Floppy backups
+## Contributing
 
-This script generates a Floppy import CSV based on the provided template. The `.clz` format or internal Floppy backup format is proprietary and not documented here, so this converter targets the most reliable path: CSV import.
+Forks are welcome and encouraged. If you have an idea, improvement, or fix, feel free to fork the project and propose a contribution back.
